@@ -1,0 +1,13 @@
+.assetTable {
+    margin: 10px;
+    padding: 10px;
+}
+
+.thClass {
+    display: flex;
+    font-weight: bold;
+}
+
+.trClass {
+    display: flex;
+}

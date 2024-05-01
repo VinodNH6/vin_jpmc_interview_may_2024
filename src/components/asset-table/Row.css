@@ -1,0 +1,29 @@
+.row {
+    padding: 10px;
+    min-width: 100px;
+    width: 100%;
+    border: 1px solid black;
+}
+  
+.rowCredit {
+    padding: 10px;
+    min-width: 100px;
+    width: 100%;
+    border: 1px solid black;
+    background-color: #94f0a9;
+}
+.rowEquities {
+    padding: 10px;
+    min-width: 100px;
+    width: 100%;
+    border: 1px solid black;
+    background-color: #9ec6f2;
+}
+.rowCommodities {
+    padding: 10px;
+    min-width: 100px;
+    width: 100%;
+    border: 1px solid black;
+    color: black;
+    background-color: white;
+}

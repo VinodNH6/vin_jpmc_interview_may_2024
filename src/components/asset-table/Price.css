@@ -1,0 +1,9 @@
+.positivePrice {
+    color: blue;
+    font-weight: 600;
+}
+
+.negativePrice {
+    color: red;
+    font-weight: 600;
+}

@@ -1,0 +1,159 @@
+import React, { useEffect, useContext, useState } from 'react';
+
+import { actionTypes, assetTypes, assetKeys } from '../constants';
+import { assetProp } from '../types';
+import Icons from '../icons/Icons';
+import { AssetsContext } from '../asset-provider/AssetContextProvider';
+import { ActionInterface } from '../asset-provider/types';
+// import { AssetTableProps } from './types';
+import { fetchAssetData } from '../../lib/api-call/fetchData';
+import Price from './Price';
+
+import './AssetTable.css';
+
+interface AssetTableProps {
+  assetData: assetProp[]
+}
+
+
+const boxStyle = {
+  display: 'flex'
+}
+
+const thStyle = {
+  ...boxStyle,
+  fontWeight: 'bold'
+}
+
+const trStyle = {
+  ...boxStyle
+}
+
+const colStyle = {
+  padding: 10,
+  minWidth: 100,
+  border: '1px solid black',
+  display: 'flex',
+  justifyContent: 'space-evenly'
+}
+
+const rowStyle = {
+  padding: 10,
+  minWidth: 100,
+  border: '1px solid black'
+}
+
+
+const getRowStyle = (assetObj: assetProp) => {
+  console.log(assetObj)
+  const { assetClass } = assetObj || {}
+  if(assetClass === assetTypes.CREDIT) {
+    return {
+      ...rowStyle,
+      color: 'green'
+    }
+  } else if(assetClass === assetTypes.EQUITIES) {
+    return {
+      ...rowStyle,
+      color: 'blue'
+    }
+  } else if(assetClass === assetTypes.COMMODITIES) {
+    return {
+      ...rowStyle,
+      color: 'orange'
+    }
+  }
+  return rowStyle
+}
+
+const getRowClassname = (assetObj: assetProp) => {
+  console.log(assetObj)
+  const { assetClass } = assetObj || {}
+  if(assetClass === assetTypes.CREDIT) {
+    return "rowGreen"
+  } else if(assetClass === assetTypes.EQUITIES) {
+    return "rowBlue"
+  } else if(assetClass === assetTypes.COMMODITIES) {
+    return "rowOrange"
+  }
+  return ""
+}
+
+
+const getActionType = (columnName: string): string => {
+  if(columnName === assetKeys.TICKER) {
+    return actionTypes.SORT_BY_TICKER
+  }
+  if(columnName === assetKeys.PRICE) {
+    return actionTypes.SORT_BY_PRICE
+  }
+  if(columnName === assetKeys.ASSET_CLASS) {
+    return actionTypes.SORT_BY_ASSET_CLASS
+  }
+  return actionTypes.NORMAL
+}
+
+const handleColClick = (columnName: string, dispatch: React.Dispatch<ActionInterface>) => {
+  console.log(columnName)
+  // const typex = getActionType(columnName)
+  // dispatch({
+  //   type: typex,
+  //   payload: fetchData(typex)
+  // })
+  fetchAssetData("url", columnName, dispatch)
+}
+
+
+
+const AssetTable = ({ assetData }: AssetTableProps) => {
+  const { dispatch } = useContext(AssetsContext);
+  const [ selectedColumn, setSelectedColumn ] = useState("");
+  console.log(assetData)
+
+  const handleColumnClick = (columnName: string) => {
+    handleColClick(columnName, dispatch)
+    setSelectedColumn(columnName)
+  }
+
+  console.log(selectedColumn)
+
+  if(Array.isArray(assetData) && assetData.length > 0) {
+    const columnNames: string[] = Object.keys(assetData[0])
+
+    return (
+      <div>
+        <div className='thClass'> 
+          {columnNames.map(columnName => {
+            return (
+              <div className='column'>
+                <div> {columnName} </div>
+                <div> 
+                  <button onClick={() => handleColumnClick(columnName)}>
+                      {selectedColumn === columnName ? <Icons type="up" /> : "-" }
+                  </button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        <>
+          {assetData.map((item: assetProp) => {
+            return (
+              <div className='trClass'>
+                {columnNames.map((col: string) => {
+                  return (
+                    <div className={getRowClassname(item)}> {col === assetKeys.PRICE ? <Price value={item[col]} /> : <>{item[col]}</>} </div>
+                  )
+                })}
+              </div>
+            )
+          })}
+        </>
+      </div>
+    );
+  } else {
+    return null
+  }
+}
+
+export default AssetTable;

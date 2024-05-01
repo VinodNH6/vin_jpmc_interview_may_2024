@@ -1,0 +1,13 @@
+
+.column {
+    padding: 10px;
+    min-width: 100px;
+    width: 100%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.roundButton {
+    border-radius: 5px;
+}
