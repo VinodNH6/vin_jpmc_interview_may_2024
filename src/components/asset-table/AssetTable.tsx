@@ -8,30 +8,40 @@ import Column from './Column';
 import Row from './Row';
 
 import './AssetTable.css';
+import { api_error, api_loading_text } from '../constants';
 
 interface AssetTableProps {
   assetData: assetProp[]
 }
 
-const handleSorting = (columnName: string, dispatch: React.Dispatch<ActionInterface>) => {
-  fetchAssetData("url", columnName, dispatch)
+const handleSorting = (columnName: string, dispatch: React.Dispatch<ActionInterface>, setLoading: (val: boolean) => void, setError: (val: boolean) => void) => {
+  fetchAssetData("url", columnName, dispatch, setLoading, setError)
 }
 
 
 const AssetTable = ({ assetData }: AssetTableProps) => {
   const { dispatch } = useContext(AssetsContext);
   const [ selectedColumn, setSelectedColumn ] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false)
+
 
   const handleColumnSorting = (columnName: string) => {
-    handleSorting(columnName, dispatch)
+    handleSorting(columnName, dispatch, setLoading, setError)
     setSelectedColumn(columnName)
   }
+
 
   if(Array.isArray(assetData) && assetData.length > 0) {
     const columnNames: string[] = Object.keys(assetData[0])
 
     return (
       <div className='assetTable'>
+        <p className={(loading || error) ? `infoPanelVisible` : `infoPanelHidden`}>
+          {loading && api_loading_text}
+          {error && api_error}
+        </p>
+
         <div className='thClass'>
           {columnNames.map(columnName => {
             return (

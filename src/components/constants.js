@@ -18,3 +18,6 @@ export const assetKeys = {
     PRICE: "price", 
     ASSET_CLASS: "assetClass"
 }
+
+export const api_loading_text = "Loading data please wait..."
+export const api_error = "Error occured !!!"

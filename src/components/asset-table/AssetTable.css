@@ -11,3 +11,15 @@
 .trClass {
     display: flex;
 }
+
+.infoPanelVisible {
+    color: orangered;
+    height: 30px;
+    visibility: visible;
+}
+
+.infoPanelHidden {
+    color: orangered;
+    height: 30px;
+    visibility: hidden;
+}
